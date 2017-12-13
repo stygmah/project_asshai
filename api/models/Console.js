@@ -5,7 +5,23 @@
  * @docs        :: http://sailsjs.org/documentation/concepts/models-and-orm/models
  */
 
-module.exports = {
+const {Schema} = require('mongoose');
 
-};
+var schema = new Schema({
+    id: {required:true, type:Number, unique:true},
+    name : {required:true, type:String},
+    slug: String,
+    url: String,
+    log: Schema.Types.Mixed,
+    website: String,
+    summary: String,
+    alternative_name: String,
+    generation: Number,
+    games: [Number],
+    versions: [Schema.Types.Mixed],
+    created_at: Date,
+    updated_at: Date,
+},{ collection: 'console' , minimize: false });
 
+var Console = schema;
+module.exports = Console;
