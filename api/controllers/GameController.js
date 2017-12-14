@@ -15,16 +15,28 @@ module.exports = {
     var id = req.body.id;
     var Game = client.model('Game',gameSchema);
     Game.findOne({id: id}, function(err,response){
+      //Find Game in local database
       if(err){
         return res.status(500).send(err);
       }else{
         if(response){
           return res.status(200).send(response);
         }else{
-          IGDB.getGame({id:id}).then((result)=>{
-            if(result){
-              console.log('GAME FROM SOURCE');
-              return res.status(200).send(result);
+          //if game not found, search in igdb
+          IGDB.getGame(id).then((result)=>{
+            var game = result.body[0];
+            if(result && result.body){
+              //if game is found it saves on local and sends request parallel
+              console.log('GAME FROM SOURCE:',game.name);
+              Game.create(game, (errorSave,doc)=>{
+                if(errorSave){
+                  console.log('There was an error when saving '+game.name+": "+errorSave);
+                }else{
+                  console.log(game.name+' Saved succesfully');
+                }
+              });
+              //paralel, original IGDB doc sent
+              return res.status(200).send(game);
             }else{
               return res.status(404).send();
             }

@@ -5,9 +5,9 @@ const client = igdb(IGDB_KEY);
 
 
 module.exports = {
-    getGame: (params)=>{
+    getGame: (ids)=>{
       return new Promise((resolve,reject)=>{
-        client.games(params)
+        client.games({ids:[ids]},['*'])
         .then((result)=>{
           resolve(result);
         })
