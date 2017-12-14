@@ -4,12 +4,15 @@
  * @description :: Server-side logic for managing games
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
+const async = require('async');
+const _ = require('lodash');
 const gameSchema = require('../models/Game');
 const consoleSchema = require('../models/Console');
 const client = require('../services/DBService.js');
 const IGDB = require('../services/IGDBService');
 
 module.exports = {
+  /*********GET SINGLE GAME**********/
   getSingleGame: (req,res)=>{
     if(!req.body.route) return res.status(400).send('Error to edit');
     var route = req.body.route;
@@ -20,6 +23,8 @@ module.exports = {
         return res.status(500).send(err);
       }else{
         if(response){
+          //MAIN SUCCESS CASE
+          transformGame(response);
           return res.status(200).send(response);
         }else{
           //if game not found, search in igdb
@@ -48,12 +53,36 @@ module.exports = {
       }
     });
   },
+  /********************/
+
+  /**********SEARCH FOR A GAME*********/
   searchGame:(req,res)=>{
   }
+  /********************/
 };
 
-var transformGame = (id)=>{
-  Game.findOne({id:id},(err,res)=>{
-    
+var transformGame = (game)=>{
+  var Console = client.model('Console',consoleSchema);
+  var consoles = game.release_dates.map((obj)=>{
+    if(!_.includes(consoles, obj.platform)){
+      return obj.platform;
+    }
   });
+  //Update consoles to Object IDs
+  Console.find({id: consoles},(err,res)=>{
+    if(err){
+
+    }else{
+      if(!res){
+
+      }else{
+        //map consoles and retrieve ids
+        var console_ids = [];
+
+
+
+      }
+    }
+  });
+  //Update developers to Object IDs
 }
