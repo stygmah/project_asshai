@@ -11,10 +11,10 @@ const IGDB = require('../services/IGDBService');
 
 module.exports = {
   getSingleGame: (req,res)=>{
-    if(!req.body.id) return res.status(400).send('Error to edit');
-    var id = req.body.id;
+    if(!req.body.route) return res.status(400).send('Error to edit');
+    var route = req.body.route;
     var Game = client.model('Game',gameSchema);
-    Game.findOne({id: id}, function(err,response){
+    Game.findOne({slug: route}, function(err,response){
       //Find Game in local database
       if(err){
         return res.status(500).send(err);
@@ -23,7 +23,7 @@ module.exports = {
           return res.status(200).send(response);
         }else{
           //if game not found, search in igdb
-          IGDB.getGame(id).then((result)=>{
+          IGDB.getGame(route).then((result)=>{
             var game = result.body[0];
             if(result && result.body){
               //if game is found it saves on local and sends request parallel
@@ -32,7 +32,7 @@ module.exports = {
                 if(errorSave){
                   console.log('There was an error when saving '+game.name+": "+errorSave);
                 }else{
-                  console.log(game.name+' Saved succesfully');
+                  console.log(game.name+' Saved succesfully\n');
                 }
               });
               //paralel, original IGDB doc sent
@@ -49,7 +49,11 @@ module.exports = {
     });
   },
   searchGame:(req,res)=>{
-
   }
 };
 
+var transformGame = (id)=>{
+  Game.findOne({id:id},(err,res)=>{
+    
+  });
+}

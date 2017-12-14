@@ -5,7 +5,22 @@ const client = igdb(IGDB_KEY);
 
 
 module.exports = {
-    getGame: (ids)=>{
+    getGame: (route)=>{
+      return new Promise((resolve,reject)=>{
+        client.games({
+          field: 'slug',
+          limit:1,
+          search:route
+        },['*'])
+        .then((result)=>{
+          resolve(result);
+        })
+        .catch((err)=>{
+          reject(err);
+        })
+      });
+    },
+    searchGame: (params,page,limit)=>{
       return new Promise((resolve,reject)=>{
         client.games({ids:[ids]},['*'])
         .then((result)=>{
