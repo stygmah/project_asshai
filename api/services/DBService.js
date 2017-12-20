@@ -8,8 +8,8 @@ var client = mongoose.connect("mongodb://"+ user +":"+ password +"@ds135866.mlab
                     if(err)throw err;
                 });
 
-mongoose.connection.on('connected', function () {  
+mongoose.connection.on('connected', function () {
   console.log('Mongoose default connection open');
-  
-}); 
+
+});
 module.exports = client;

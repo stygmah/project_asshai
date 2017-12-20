@@ -9,7 +9,7 @@ const {Schema} = require('mongoose');
 var schema = new Schema({
     id: {required:true, type:Number, unique:true},
     name : {required:true, type:String},
-    slug: String,
+    slug: {required:true, type:String, unique:true},
     url: String,
     summary: String,
     storyline: String,

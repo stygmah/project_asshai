@@ -13,9 +13,12 @@ const IGDB = require('../services/IGDBService');
 
 module.exports = {
   /*********GET SINGLE GAME**********/
+  /* Takes a slug and id (for saving)
+  /*********************************/
   getSingleGame: (req,res)=>{
     if(!req.body.route) return res.status(400).send('Error to edit');
     var route = req.body.route;
+    var id = req.body.id;
     var Game = client.model('Game',gameSchema);
     Game.findOne({slug: route}, function(err,response){
       //Find Game in local database
@@ -28,7 +31,7 @@ module.exports = {
           return res.status(200).send(response);
         }else{
           //if game not found, search in igdb
-          IGDB.getGame(route).then((result)=>{
+          IGDB.getGame(id).then((result)=>{
             var game = result.body[0];
             if(result && result.body){
               //if game is found it saves on local and sends request parallel
