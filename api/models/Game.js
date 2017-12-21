@@ -15,7 +15,7 @@ var schema = new Schema({
     storyline: String,
     franchise: Number,
     hypes: Number,
-    popilarity: Number,
+    popularity: Number,
     rating: Number,
     rating_count: Number,
     aggregated_rating: Number,
