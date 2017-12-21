@@ -34,18 +34,27 @@ module.exports = {
           IGDB.getGame(id).then((result)=>{
             var game = result.body[0];
             if(result && result.body){
-              //if game is found it saves on local and sends request parallel
               console.log('GAME FROM SOURCE:',game.name);
-              Game.create(game, (errorSave,doc)=>{
-                if(errorSave){
-                  console.log('There was an error when saving '+game.name+": "+errorSave);
+              //if game is found it saves on local and sends request parallel
+
+              IGDB.getGame(id, true).then((result_toSave)=>{
+                var gameToSave = result_toSave.body[0];
+                if(result && result.body){
+                  //if game is found it saves on local and sends request parallel
+                  Game.create(gameToSave, (errorSave,doc)=>{
+                    if(errorSave){
+                      console.log('There was an error when saving '+gameToSave.name+": "+errorSave);
+                    }else{
+                      console.log(gameToSave.name+' Saved succesfully\n');
+                    }
+                  });
                 }else{
-
-                  //TODO: Function to populate
-
-                  console.log(game.name+' Saved succesfully\n');
+                  return res.status(404).send();
                 }
-              });
+              })
+              .catch((error)=>{
+                return res.status(500).send(err);
+              })
               //paralel, original IGDB doc sent
               return res.status(200).send(game);
             }else{
@@ -97,9 +106,9 @@ var transformGame = (game)=>{
 
 /***************
  * ADD CONSOLES
- * 
- * 
- * 
+ *
+ *
+ *
  ***************/
 var addConsoles = (game)=>{
   var Game = client.model('Game', gameSchema);

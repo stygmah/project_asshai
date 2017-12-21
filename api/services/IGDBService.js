@@ -15,12 +15,19 @@ module.exports = {
      *
      *
     ********************/
-    getGame: (id)=>{
+    getGame: (id, toSave=false)=>{
+      var field_options = ['*'];
+      var query ={
+        ids:[id]
+      }
+
+      if(!toSave){
+        query.expand = expansions;
+        field_options = fields;
+      }
+
       return new Promise((resolve,reject)=>{
-        client.games({
-          ids: [id],
-          expand: expansions
-        },fields)
+        client.games(query,field_options)
         .then((result)=>{
           resolve(result);
         })
@@ -29,7 +36,6 @@ module.exports = {
         })
       });
     },
-
     /*******************
      *  SEARCH GAME
      *
