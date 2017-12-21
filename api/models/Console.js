@@ -13,7 +13,7 @@ var schema = new Schema({
     name : {required:true, type:String},
     slug: {required:true, type:String},
     url: String,
-    log: Schema.Types.Mixed,
+    logo: Schema.Types.Mixed,
     website: String,
     summary: String,
     alternative_name: String,
