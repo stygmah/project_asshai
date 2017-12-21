@@ -9,8 +9,9 @@ const {Schema} = require('mongoose');
 
 var schema = new Schema({
     id: {required:true, type:Number, unique:true},
+    original_id: {required: true, type: Number, unique:true},
     name : {required:true, type:String},
-    slug: String,
+    slug: {required:true, type:String},
     url: String,
     log: Schema.Types.Mixed,
     website: String,
@@ -21,7 +22,7 @@ var schema = new Schema({
     versions: [Schema.Types.Mixed],
     created_at: Date,
     updated_at: Date,
-},{ collection: 'console' , minimize: false });
+},{ collection: 'consoles' , minimize: false });
 
 var Console = schema;
 module.exports = Console;

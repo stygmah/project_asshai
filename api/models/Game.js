@@ -51,6 +51,7 @@ var schema = new Schema({
     bundles:[Number],
     games:[Number],
     external:Schema.Types.Mixed,
+    console_ids:[Schema.Types.ObjectId],
     created_at: Date,
     updated_at: Date,
 
