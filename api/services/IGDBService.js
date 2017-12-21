@@ -1,7 +1,7 @@
 const igdb = require('igdb-api-node').default;
 const {IGDB_KEY} = require('./constants/keys');
-const expansions =  require('./constants/IGDB_Defaults.js').expansions;
-const fields =  require('./constants/IGDB_Defaults.js').fields;
+const expansions =  require('./constants/IGDB_Defaults').expanders;
+const fields =  require('./constants/IGDB_Defaults').fields;
 const client = igdb(IGDB_KEY);
 
 var defaultParameters = {
