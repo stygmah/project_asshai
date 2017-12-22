@@ -41,12 +41,17 @@ module.exports = {
                 var gameToSave = result_toSave.body[0];
                 if(result && result.body){
                   //if game is found it saves on local and sends request parallel
-                  Game.create(gameToSave, (errorSave,doc)=>{
-                    if(errorSave){
-                      console.log('There was an error when saving '+gameToSave.name+": "+errorSave);
-                    }else{
-                      console.log(gameToSave.name+' Saved succesfully\n');
-                    }
+                  //CHANGE TO ASYNC PARALLEL WHEN YOU HAVE ALL CALLS
+                  //REFACTOR TO PROMISES IF POSSIBLE
+                  addConsoles(game,(console_ids)=>{
+                    gameToSave.console_ids = console_ids;
+                    Game.create(gameToSave, (errorSave,doc)=>{
+                      if(errorSave){
+                        console.log('There was an error when saving '+gameToSave.name+": "+errorSave);
+                      }else{
+                        console.log(gameToSave.name+' Saved succesfully\n');
+                      }
+                    });
                   });
                 }else{
                   return res.status(404).send();
@@ -110,7 +115,7 @@ var transformGame = (game)=>{
  *
  *
  ***************/
-var addConsoles = (game)=>{
+var addConsoles = (game, callback)=>{
   var Game = client.model('Game', gameSchema);
   var Console = client.model('Console',consoleSchema);
   var consoles;
@@ -124,7 +129,6 @@ var addConsoles = (game)=>{
       }
     });
   }
-
   //Update consoles to Object IDs
   Console.find({original_id: consoles},(err,res)=>{
     if(err){
@@ -138,15 +142,12 @@ var addConsoles = (game)=>{
         res.forEach((element)=>{
           console_ids.push((element._id));
         });
-        game.console_ids = console_ids;
-        Game.findOneAndUpdate({id:game.id}, game,(error,result)=>{
-          if(err){
-            console.error('Error saving console ids for '+game.name);
-          }else{
-            console.log('Succesfully saved console ids for '+game.name);
-          }
-        });
+        callback(game.console_ids = console_ids)
       }
     }
   });
 };
+var addCompaniesAndDevelopers = (game,callback)=>{
+  
+}
+

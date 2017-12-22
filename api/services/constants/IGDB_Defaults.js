@@ -25,6 +25,9 @@ module.exports = {
         'websites',
         'release_dates',
         'game',
+        'cover',
+        'screenshots',
+        'videos',
         //Expanded fields
         'genres.name',
         'publishers.name',
